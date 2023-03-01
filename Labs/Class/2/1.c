@@ -12,31 +12,49 @@ void f4(int *arr, int n, int **new, int *newsize);
 
 int main()
 {
+    runf4();
     return 0;
 }
 
 void runf4()
 {
+    int dups[] = {1,2,3,3,4,4,4,5};
+    int dupsize = sizeof(dups)/sizeof(int);
+    int *nodups = NULL, nodupsize = 0;
+
+    f4(dups,dupsize,&nodups,&nodupsize);
+    printarr(dups,dupsize);
+    printarr(nodups,nodupsize);
 }
 
 void f4(int *arr, int n, int **new, int *newsize)
 {
-    int i, j, k;
+    int i, j;
     for (i = *newsize = 1; i < n; i++)
     {
-        if(arr[i] != arr[i-1])
+        if (arr[i] != arr[i - 1])
         {
             (*newsize)++;
         }
     }
-    *new = (int *)malloc((size_t)(*newsize)*sizeof(int)); 
+
+    *new = (int *)malloc((size_t)(*newsize) * sizeof(int));
+
+    **new = *arr;
+    for (i = j = 1; i < n; i++)
+    {
+        if (arr[i] != (*new)[j - 1])
+        {
+            (*new)[j++] = arr[i];
+        }
+    }
 }
 
 void runf3()
 {
     char *tosplit = "AaBbCcDd";
     char *lower = NULL, *upper = NULL;
-    f2(tosplit, &lower, &upper);
+    f3(tosplit, &lower, &upper);
     puts(tosplit);
     puts(lower);
     puts(upper);

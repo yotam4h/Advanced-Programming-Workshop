@@ -18,7 +18,7 @@ int main()
     int dbSize = sizeof(db) / sizeof(Student);
     double avg;
     studentAvg(db, dbSize, &avg);
-    printf("Average is: %.3lf\n",avg);
+    printf("Average is: %.3lf\n", avg);
     return 0;
 }
 
@@ -30,15 +30,14 @@ int main()
 int studentAvg(const Student *const data, const int size, double *const avg)
 {
     int i, abvAvg = 0;
-    double sum = 0;
     for (i = 0; i < size; i++)
     {
-        sum += ((data + i)->grade);
+        (*avg) += ((data + i)->grade);
     }
-    *avg = sum / size;
+    (*avg) /= size;
     for (i = 0; i < size; i++)
     {
-        if ((data + i)->grade >= *avg)
+        if ((data + i)->grade >= (*avg))
         {
             printf("Name: %s, ID: %d\n", (data + i)->name, (data + i)->id_card);
             abvAvg++;

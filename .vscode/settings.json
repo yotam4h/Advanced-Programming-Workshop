@@ -5,7 +5,8 @@
     "assert.h": "c",
     "string.h": "c",
     "floatn.h": "c",
-    "cstdlib": "c"
+    "cstdlib": "c",
+    "stdbool.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
@@ -41,5 +42,6 @@
     "**/.vscode",
     "**/.vscode/**"
   ],
-  "C_Cpp_Runner.useAddressSanitizer": false
+  "C_Cpp_Runner.useAddressSanitizer": false,
+  "C_Cpp.errorSquiggles": "disabled"
 }

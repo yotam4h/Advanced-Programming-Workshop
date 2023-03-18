@@ -54,7 +54,7 @@ void freeResources(StudentData *const init, int const initSize, Statistics *cons
     int i;
     for (i = 0; i < initSize; i++)
     {
-        free(((init+i)->_grade));
+        free(((init + i)->_grade));
     }
 
     free(stats->_abveq);
@@ -72,7 +72,7 @@ void printstats(const Statistics *const stats)
     printf("Students above or equal to average: ");
     for (i = 0; i < stats->_abveqSize; i++)
     {
-        printf("Id: %d, Average: %.3lf.    ", (stats->(_abveq + i)->_id), (stats->(_abveq + i)->_average));
+        printf("Id: %d, Average: %.3lf.    ", (stats->_abveq[i]._id), (stats->_abveq[i]._average));
     }
     printf("\n");
     if (0 < stats->_underSize)
@@ -80,7 +80,7 @@ void printstats(const Statistics *const stats)
         printf("Students under average: ");
         for (i = 0; i < stats->_underSize; i++)
         {
-            printf("Id: %d, Average: %.3lf.    ", (stats->(_under + i)->_id), (stats->(_under + i)->_average));
+            printf("Id: %d, Average: %.3lf.    ", (stats->_under[i]._id), (stats->_under[i]._average));
         }
         printf("\n");
     }
@@ -95,7 +95,7 @@ void classification(const StudentData *const init, int const initSize, Statistic
      *  store average of every student grades in 'avgarray',
      *  store average of all averages in 'totalavg'.
      */
-    avgarray = (double *)malloc(initSize * sizeof(double));
+    avgarray = (double *)malloc((size_t)initSize * sizeof(double));
     if (!avgarray)
         return; // ! needs to change
     for (i = 0; i < initSize; i++)
@@ -121,10 +121,10 @@ void classification(const StudentData *const init, int const initSize, Statistic
     }
     (stats->_abveqSize) = initSize - (stats->_underSize);
 
-    stats->_abveq = (StudentProcData *)malloc((stats->_abveqSize) * sizeof(StudentProcData));
+    stats->_abveq = (StudentProcData *)malloc((size_t)(stats->_abveqSize) * sizeof(StudentProcData));
     if (!(stats->_abveq))
         return; // ! needs to change
-    stats->_under = (StudentProcData *)malloc((stats->_underSize) * sizeof(StudentProcData));
+    stats->_under = (StudentProcData *)malloc((size_t)(stats->_underSize) * sizeof(StudentProcData));
     if (!(stats->_under))
         return; // ! needs to change
 
@@ -170,14 +170,14 @@ void inputstudents(StudentData *const list, const int size)
 int *inputgrades(const int n)
 {
     int i, *arr = NULL;
-    arr = (int *)malloc(n * sizeof(int));
-    if (!arr)
-        return;
-
-    for (i = 0; i < n; i++)
+    arr = (int *)malloc((size_t)n * sizeof(int));
+    if (arr)
     {
-        printf("grade [%d]: ", i + 1);
-        scanf("%d", arr + i);
+        for (i = 0; i < n; i++)
+        {
+            printf("grade [%d]: ", i + 1);
+            scanf("%d", arr + i);
+        }
     }
     return arr;
 }

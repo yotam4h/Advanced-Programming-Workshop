@@ -114,6 +114,7 @@ rectangle scanRectangle()
 {
 	// your code:
 
+	enum State {Invalid, Valid, Point};
 	rectangle newRec;
 
 	// initialize the rectangle
@@ -128,7 +129,7 @@ rectangle scanRectangle()
 		scanf("%d", &newRec.xButtomRight);
 		printf("Please enter bottom right point y: ");
 		scanf("%d", &newRec.yButtomRight);
-	} while (validateRectangle(&newRec) == 0);
+	} while (validateRectangle(&newRec) == Invalid);
 
 	return newRec;
 }
@@ -143,7 +144,8 @@ rectangle scanRectangle()
 recElement *createElement()
 {
 	// your code:
-
+	
+	enum State {Invalid, Valid, Point};
 	recElement *newElement = NULL;
 
 	// allocate memory for recElement
@@ -156,7 +158,7 @@ recElement *createElement()
 		newElement->Rect = scanRectangle();
 
 		// if point, free allocated memory and nullify 'newElement'
-		if (validateRectangle(&newElement->Rect) == 2)
+		if (validateRectangle(&newElement->Rect) == Point)
 		{
 			free(newElement);
 			newElement = NULL;
@@ -217,7 +219,7 @@ rectangle findSmallest(recElement *head)
 {
 	// your code:
 
-	// ? can just advance head because its a copy of the original pointer ?
+	// ? can just advance 'head' because its a copy of the original pointer ?
 	// ? will not discard linked-list original head address ?
 	// ! using new pointer 'current' for readability (can't change function paramaters) !
 
@@ -288,28 +290,23 @@ void printList(recElement *head)
 {
 	// your code:
 
-	// ? can just advance head because its a copy of the original pointer ?
+	// ? can just advance 'head' because its a copy of the original pointer ?
 	// ? will not discard linked-list original head address ?
 	// ! using new pointer 'current' for readability (can't change function paramaters) !
 
-	recElement *current = NULL;
+	recElement *current = head;
 
-	// if linked-list exists
-	if (head != NULL)
+	// iterate linked-list
+	while (current != NULL)
 	{
-		current = head;
+		printRectangle(&current->Rect);
+		printf(" -> ");
 
-		// iterate linked-list
-		while (current != NULL)
-		{
-			printRectangle(&current->Rect);
-			printf(" -> ");
-
-			// advance 'current'
-			current = current->next;
-		}
-		// no need to nullify 'current', will nullify itself
+		// advance 'current'
+		current = current->next;
 	}
+	// no need to nullify 'current', will nullify itself
+
 	printf("NULL\n");
 }
 // --------------------------- //
@@ -337,6 +334,7 @@ void freeList(recElement *head)
 		// release first element memory
 		free(temp);
 	}
+	// no need to nullify 'head', will nullify itself
 	// nullify 'temp'
 	temp = NULL;
 }

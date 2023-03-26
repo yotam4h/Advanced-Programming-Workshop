@@ -79,23 +79,28 @@ int validateRectangle(rectangle *rec)
 	// your code:
 
 	// ! IMPORTANT !
-	// TODO : add more cases, top point is not top, bottom point is not bottom
+	// TODO : add more INVALID cases, top point is not top, bottom point is not bottom
 	// ! IMPORTANT !
+
+	enum State {Invalid, Valid, Point};
 
 	// if co-ordinates make a point
 	if (rec->xTopSmall == rec->xButtomRight && rec->yTopSmall == rec->yButtomRight)
 	{
-		return 2;
+		return Point;
+		//return 2;
 	}
 
 	// if co-ordinates make a line
 	if (rec->xTopSmall == rec->xButtomRight || rec->yTopSmall == rec->yButtomRight)
 	{
-		return 0;
+		return Invalid;
+		//return 0;
 	}
 
 	// rectangle is valid
-	return 1;
+	return Valid;
+	//return 1;
 }
 // --------------------------- //
 

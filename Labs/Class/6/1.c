@@ -36,7 +36,7 @@ int main()
         printList(head);
     } */
 
-    createSortedList(head);
+    head = createSortedList(head);
     printList(head);
 
     return 0;
@@ -45,7 +45,22 @@ int main()
 Node *createSortedList(Node *head)
 {
     char input;
-    
+
+    printf("Creating list. Enter letters or 0 to stop.\n");
+
+    // first element
+    head = (Node *)malloc(sizeof(Node));
+
+    // if memory allocated
+    if (head != NULL)
+    {
+        scanf("%c",&input);
+        head->data = input;
+        head->next = NULL;
+
+        // loop new elements
+    }
+    return head;
 }
 
 /**

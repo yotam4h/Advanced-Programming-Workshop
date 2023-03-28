@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/workspaces/Advanced-Programming-Workshop/Assignment-1",
-      "program": "/workspaces/Advanced-Programming-Workshop/Assignment-1/build/Debug/outDebug",
+      "cwd": "/workspaces/Advanced-Programming-Workshop/Labs/Class/6",
+      "program": "/workspaces/Advanced-Programming-Workshop/Labs/Class/6/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

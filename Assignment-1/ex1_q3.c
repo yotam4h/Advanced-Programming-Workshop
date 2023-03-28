@@ -79,7 +79,7 @@ int validateRectangle(rectangle *rec)
 	// your code:
 
 	// ! IMPORTANT !
-	// TODO : add more INVALID cases, top point is not top, bottom point is not bottom
+	// TODO : add more INVALID cases, TopSmall is lower than ButtomRight, topSmall is more right to ButtomRight
 	// ! IMPORTANT !
 
 	enum State {Invalid, Valid, Point};

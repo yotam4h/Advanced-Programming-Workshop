@@ -90,8 +90,8 @@ int arrangeArray(int **arr, int n)
 
 	// ? best practice: temp pointer to array, to avoid dereferencing twice ?
 
-	int i, k, *array = *arr;
-	
+	int i, k, *array = *arr, *temp = NULL;
+
 	// find size of first group (k)
 	for (i = 1; i < n; i++)
 	{
@@ -101,22 +101,30 @@ int arrangeArray(int **arr, int n)
 			break;
 		}
 	}
-	// realloce array and add size k to the end of the array
-	array = (int *)realloc(array, sizeof(int) * (n + k));
 
-	// copy the first group to the end of the array
-	memcpy(array + n, array, sizeof(int) * k);
-	
-	// copy from array[k] to array[n+1] into the start of the array
-	memcpy(array, array + k, sizeof(int) * (n + k));
-	
-	// reallocate array to the original size
-	array = (int *)realloc(array, sizeof(int) * n);
-	
-	// input array address to arr, and nullify array;
-	*arr = array;
+	// realloce 'array' and add size k to the end of the 'array'
+	temp = (int *)realloc(array, sizeof(int) * (n + k));
+
+	// incase realloc fails
+	if (temp != NULL)
+	{
+		array = temp;
+		temp = NULL;
+
+		// copy the first group to the end of the 'array'
+		memcpy(array + n, array, sizeof(int) * k);
+
+		// copy from 'array[k]' to 'array[n+1]' into the start of 'array'
+		memcpy(array, array + k, sizeof(int) * (n + k));
+
+		// reallocate 'array' to the original size
+		array = (int *)realloc(array, sizeof(int) * n);
+	}
+
+	// input 'array' address to 'arr', and nullify 'array';
+	*arr = array; // return by reference: original 'array' if realloc failed, else sorted 'array'
 	array = NULL;
-	
+
 	// return size of first group
 	return k;
 }

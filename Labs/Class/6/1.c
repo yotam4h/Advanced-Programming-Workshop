@@ -10,20 +10,20 @@
 
 typedef struct node_template Node; */
 
-typedef struct nodeTemplate{
+typedef struct nodeTemplate
+{
     struct nodeTemplate *next;
     char data;
 } NodeTemplate;
 
 typedef NodeTemplate Node = {NULL};
 
-
 void printList(const Node *current);
 void insertToSorted(Node **head, char charToInsert);
 void createSortedList(Node **head);
 void reverseList(Node **head);
 
-    int main()
+int main()
 {
     Node *head;
 
@@ -74,10 +74,10 @@ void reverseList(Node **head)
         current = after;
         after = after->next;
     }
-    
+
     // reverse last node
     current->next = before;
-    
+
     // update head of list
     *head = current;
 

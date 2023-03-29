@@ -14,9 +14,7 @@ typedef struct nodeTemplate
 {
     struct nodeTemplate *next;
     char data;
-} NodeTemplate;
-
-typedef NodeTemplate Node = {NULL};
+} Node;
 
 void printList(const Node *current);
 void insertToSorted(Node **head, char charToInsert);
@@ -143,6 +141,12 @@ void insertToSorted(Node **head, char charToInsert)
         {
             current = current->next;
         }
+        /*
+        if(current != *head) // insert in the middle or end
+        {
+
+        }
+        */
 
         // insert 'newNode'
         newNode->next = current->next;

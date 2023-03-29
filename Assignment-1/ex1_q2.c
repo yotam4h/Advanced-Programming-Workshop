@@ -201,7 +201,7 @@ int removePoint(polygon *poly, int idx)
 
     // ? best practice to have only 1 return statement ? maybe use bool ?
     // ? best practice of if statements ?
-
+    
     int i;
     point *newPoints;
 
@@ -226,7 +226,7 @@ int removePoint(polygon *poly, int idx)
             newPoints = NULL;
             poly->n--;
             poly->scope = calculateScope(poly->points, poly->n);
-            return 1; 
+            return 1;
         }
     }
 

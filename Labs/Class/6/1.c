@@ -2,21 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct node_template
+/* struct node_template
 {
     struct node_template *next;
     char data;
 } nodeDefault = {NULL};
 
-typedef struct node_template Node;
+typedef struct node_template Node; */
+
+typedef struct nodeTemplate{
+    struct nodeTemplate *next;
+    char data;
+} NodeTemplate;
+
+typedef NodeTemplate Node = {NULL};
+
 
 void printList(const Node *current);
-Node *insertToSorted(Node *head, char charToInsert);
-Node *createSortedList(Node *head);
+void insertToSorted(Node **head, char charToInsert);
+void createSortedList(Node **head);
+void reverseList(Node **head);
 
-int main()
+    int main()
 {
-    Node *head = NULL, *temp = NULL;
+    Node *head;
+
     /* Node a, b, c;
     a.next = &b;
     b.next = &c;
@@ -24,6 +34,10 @@ int main()
     a.data = 'b';
     b.data = 'c';
     c.data = 'd';
+
+
+    a b c d
+
 
     head = &a;
     printList(head);
@@ -36,31 +50,68 @@ int main()
         printList(head);
     } */
 
-    head = createSortedList(head);
+    createSortedList(&head);
+    printList(head);
+    reverseList(&head);
     printList(head);
 
     return 0;
 }
 
-Node *createSortedList(Node *head)
+void reverseList(Node **head)
+{
+    Node *before = NULL,
+         *current = *head,
+         *after = current->next;
+
+    while (current != NULL && after != NULL)
+    {
+        // reverse
+        current->next = before;
+
+        // advance
+        before = current;
+        current = after;
+        after = after->next;
+    }
+    
+    // reverse last node
+    current->next = before;
+    
+    // update head of list
+    *head = current;
+
+    // nullify
+    before = NULL;
+    current = NULL;
+    after = NULL;
+}
+
+void createSortedList(Node **head)
 {
     char input;
 
     printf("Creating list. Enter letters or 0 to stop.\n");
 
     // first element
-    head = (Node *)malloc(sizeof(Node));
+    (*head) = (Node *)malloc(sizeof(Node));
 
     // if memory allocated
-    if (head != NULL)
+    if ((*head) != NULL)
     {
-        scanf("%c",&input);
-        head->data = input;
-        head->next = NULL;
+        input = getchar();
+        (*head)->data = input;
+        (*head)->next = NULL;
 
         // loop new elements
+        while ((input = getchar()) != '\n')
+        {
+            if (input == ' ')
+                continue;
+
+            insertToSorted(head, input);
+        }
     }
-    return head;
 }
 
 /**
@@ -68,25 +119,23 @@ Node *createSortedList(Node *head)
  * insert new node to sorted linked-list at the right place
  * @return Node *
  */
-Node *insertToSorted(Node *head, char charToInsert)
+void insertToSorted(Node **head, char charToInsert)
 {
-    Node *current = NULL, *newNode = (Node *)malloc(sizeof(Node));
+    Node *current = *head, *newNode = (Node *)malloc(sizeof(Node));
 
     // if linked-list exists and memory allocated
-    if (head != NULL && newNode != NULL)
+    if (current != NULL && newNode != NULL)
     {
         // initiallize 'newNode'
-        *newNode = nodeDefault;
+        newNode->next = NULL;
         newNode->data = charToInsert;
-
-        // initiallize 'current'
-        current = head;
 
         // 'newNode' needs to be the first Node
         if (strcmp(&current->data, &newNode->data) > 0)
         {
             newNode->next = current;
-            return newNode;
+            *head = newNode;
+            return;
         }
 
         // reach Node to enter 'newNode' after
@@ -99,8 +148,6 @@ Node *insertToSorted(Node *head, char charToInsert)
         newNode->next = current->next;
         current->next = newNode;
     }
-
-    return head;
 }
 
 void printList(const Node *current)

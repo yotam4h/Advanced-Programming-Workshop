@@ -198,12 +198,9 @@ int addPoint(polygon *poly)
 int removePoint(polygon *poly, int idx)
 {
     // your code:
-
-    // ? best practice to have only 1 return statement ? maybe use bool ?
-    // ? best practice of if statements ?
     
     int i;
-    point *newPoints;
+    point *newPoints = NULL;  
 
     // if index is valid
     if (idx >= 0 && idx < poly->n)

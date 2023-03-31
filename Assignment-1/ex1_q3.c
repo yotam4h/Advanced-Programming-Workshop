@@ -78,29 +78,22 @@ int validateRectangle(rectangle *rec)
 {
 	// your code:
 
-	// ! IMPORTANT !
-	// TODO : add more INVALID cases, TopSmall is lower than ButtomRight, topSmall is more right to ButtomRight
-	// ! IMPORTANT !
-
 	enum State {Invalid, Valid, Point};
 
 	// if co-ordinates make a point
 	if (rec->xTopSmall == rec->xButtomRight && rec->yTopSmall == rec->yButtomRight)
 	{
 		return Point;
-		//return 2;
 	}
 
-	// if co-ordinates make a line
-	if (rec->xTopSmall == rec->xButtomRight || rec->yTopSmall == rec->yButtomRight)
+	// if co-ordinates make a line, or TopSmall is lower than ButtomRight, topSmall is more right to ButtomRight
+	if (rec->xTopSmall >= rec->xButtomRight || rec->yTopSmall >= rec->yButtomRight)
 	{
 		return Invalid;
-		//return 0;
 	}
 
 	// rectangle is valid
 	return Valid;
-	//return 1;
 }
 // --------------------------- //
 
@@ -114,7 +107,6 @@ rectangle scanRectangle()
 {
 	// your code:
 
-	enum State {Invalid, Valid, Point};
 	rectangle newRec;
 
 	// initialize the rectangle
@@ -129,7 +121,7 @@ rectangle scanRectangle()
 		scanf("%d", &newRec.xButtomRight);
 		printf("Please enter bottom right point y: ");
 		scanf("%d", &newRec.yButtomRight);
-	} while (validateRectangle(&newRec) == Invalid);
+	} while (validateRectangle(&newRec) == 0);
 
 	return newRec;
 }
@@ -145,7 +137,6 @@ recElement *createElement()
 {
 	// your code:
 	
-	enum State {Invalid, Valid, Point};
 	recElement *newElement = NULL;
 
 	// allocate memory for recElement
@@ -158,7 +149,7 @@ recElement *createElement()
 		newElement->Rect = scanRectangle();
 
 		// if point, free allocated memory and nullify 'newElement'
-		if (validateRectangle(&newElement->Rect) == Point)
+		if (validateRectangle(&newElement->Rect) == 2)
 		{
 			free(newElement);
 			newElement = NULL;
@@ -219,12 +210,11 @@ rectangle findSmallest(recElement *head)
 {
 	// your code:
 
-	// ? can just advance 'head' because its a copy of the original pointer ?
-	// ? will not discard linked-list original head address ?
-	// ! using new pointer 'current' for readability (can't change function paramaters) !
+	// ! can just advance 'head' because its a copy of the original pointer !
+	// ! will not discard linked-list original head address !
+	// ! would change 'head' to 'current' in function declaration for readability !
 
 	rectangle smallest = {0, 0, 0, 0};
-	recElement *current = NULL;
 
 	// if linked-list exists, re-initiallize 'smallest' rectangle
 	if (head != NULL)
@@ -235,32 +225,32 @@ rectangle findSmallest(recElement *head)
 		smallest.xTopSmall = head->Rect.xTopSmall;
 
 		// advance 'current'
-		current = head->next;
+		head = head->next;
 	}
 
 	// iterate linked-list
-	while (current != NULL)
+	while (head != NULL)
 	{
 		// update leftest x
-		if (current->Rect.xTopSmall < smallest.xTopSmall)
-			smallest.xTopSmall = current->Rect.xTopSmall;
+		if (head->Rect.xTopSmall < smallest.xTopSmall)
+			smallest.xTopSmall = head->Rect.xTopSmall;
 
 		// update leftest highest y
-		if (current->Rect.yTopSmall > smallest.yTopSmall)
-			smallest.yTopSmall = current->Rect.yTopSmall;
+		if (head->Rect.yTopSmall > smallest.yTopSmall)
+			smallest.yTopSmall = head->Rect.yTopSmall;
 
 		// update rightest x
-		if (current->Rect.xButtomRight > smallest.xButtomRight)
-			smallest.xButtomRight = current->Rect.xButtomRight;
+		if (head->Rect.xButtomRight > smallest.xButtomRight)
+			smallest.xButtomRight = head->Rect.xButtomRight;
 
 		// update rightest lowest y
-		if (current->Rect.yButtomRight < smallest.yButtomRight)
-			smallest.yButtomRight = current->Rect.yButtomRight;
+		if (head->Rect.yButtomRight < smallest.yButtomRight)
+			smallest.yButtomRight = head->Rect.yButtomRight;
 
-		// advance 'current'
-		current = current->next;
+		// advance 'head'
+		head = head->next;
 	}
-	// no need to nullify 'current', will nullify itself
+	// no need to nullify 'head', will nullify itself
 
 	return smallest;
 }
@@ -290,22 +280,20 @@ void printList(recElement *head)
 {
 	// your code:
 
-	// ? can just advance 'head' because its a copy of the original pointer ?
-	// ? will not discard linked-list original head address ?
-	// ! using new pointer 'current' for readability (can't change function paramaters) !
-
-	recElement *current = head;
+	// ! can just advance 'head' because its a copy of the original pointer !
+	// ! will not discard linked-list original head address !
+	// ! would change 'head' to 'current' in function declaration for readability !
 
 	// iterate linked-list
-	while (current != NULL)
+	while (head != NULL)
 	{
-		printRectangle(&current->Rect);
+		printRectangle(&head->Rect);
 		printf(" -> ");
 
-		// advance 'current'
-		current = current->next;
+		// advance 'head'
+		head = head->next;
 	}
-	// no need to nullify 'current', will nullify itself
+	// no need to nullify 'head', will nullify itself
 
 	printf("NULL\n");
 }

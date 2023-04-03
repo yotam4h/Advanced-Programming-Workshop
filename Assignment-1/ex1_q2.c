@@ -147,7 +147,7 @@ double calculateScope(point *points, int n)
     if (points != NULL && n > 2)
     {
         // iterate over all points and sum the distance between them
-        for (i = 0; i < n - 1; i++)
+        for (i = 0; i < n - 1; i++) 
         {
             scope += distance((points + i), (points + i + 1));
         }
@@ -171,13 +171,11 @@ int addPoint(polygon *poly)
     // your code:
 
     // allocate new memory for the new point
-    point *newPoints = (point *)realloc(poly->points, (poly->n + 1) * sizeof(point));
+    poly->points = (point *)realloc(poly->points, (poly->n + 1) * sizeof(point));
 
     // if the allocation was successful
-    if (newPoints != NULL)
+    if (poly->points != NULL)
     {
-        poly->points = newPoints;
-        newPoints = NULL;
         scanPoint(poly->points + poly->n);
         poly->n++;
         poly->scope = calculateScope(poly->points, poly->n);
@@ -200,10 +198,10 @@ int removePoint(polygon *poly, int idx)
     // your code:
     
     int i;
-    point *newPoints = NULL;  
+    point *temp = NULL;  
 
     // if index is valid
-    if (idx >= 0 && idx < poly->n)
+    if (0 <= idx && idx < poly->n)
     {
         // move all points after the index to the left
         for (i = idx; i < (poly->n - 1); i++)
@@ -212,15 +210,15 @@ int removePoint(polygon *poly, int idx)
         }
 
         // reallocate memory for the new size
-        newPoints = (point *)realloc(poly->points, (poly->n - 1) * sizeof(point));
+        temp = (point *)realloc(poly->points, (poly->n - 1) * sizeof(point));
 
         // if the allocation was successful, should always be true (but just in case ...).
         // ! this also fucks up [points array] if it's false !
         // ? should duplicate the array before moving the points, and not corrupt the original data if the allocation fails ?
-        if (newPoints != NULL)
+        if (temp != NULL)
         {
-            poly->points = newPoints;
-            newPoints = NULL;
+            poly->points = temp;
+            temp = NULL;
             poly->n--;
             poly->scope = calculateScope(poly->points, poly->n);
             return 1;
@@ -241,6 +239,8 @@ void freeMemory(polygon *poly)
     // your code:
 
     free(poly->points);
+    poly->points = NULL;
     free(poly);
+    poly = NULL;
 }
 // --------------------------- //

@@ -80,6 +80,8 @@ int validateRectangle(rectangle *rec)
 
 	enum State {Invalid, Valid, Point};
 
+	// ! change logic - validate true situation, else return false
+
 	// if co-ordinates make a point
 	if (rec->xTopSmall == rec->xButtomRight && rec->yTopSmall == rec->yButtomRight)
 	{
@@ -106,7 +108,7 @@ int validateRectangle(rectangle *rec)
 rectangle scanRectangle()
 {
 	// your code:
-
+	int isValid;
 	rectangle newRec;
 
 	// initialize the rectangle
@@ -121,7 +123,12 @@ rectangle scanRectangle()
 		scanf("%d", &newRec.xButtomRight);
 		printf("Please enter bottom right point y: ");
 		scanf("%d", &newRec.yButtomRight);
-	} while (validateRectangle(&newRec) == 0);
+
+		if((isValid = validateRectangle(&newRec == 0)) == 0)
+		{
+			printf("Not a valid rectangle, try again.\n");
+		}
+	} while (isValid == 0);
 
 	return newRec;
 }

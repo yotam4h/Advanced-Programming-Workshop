@@ -118,6 +118,7 @@ int arrangeArray(int **arr, int n)
 		memcpy(array, array + k, sizeof(int) * (n + k));
 
 		// reallocate 'array' to the original size
+		// ! need to use temp pointer again
 		array = (int *)realloc(array, sizeof(int) * n);
 	}
 
@@ -127,5 +128,5 @@ int arrangeArray(int **arr, int n)
 
 	// return size of first group
 	return k;
-}
+	}
 // --------------------------- //

@@ -29,18 +29,17 @@ int main()
 
     printMulDimArr(test, rows, cols);
 
-    fun1(test,1,2);
+    fun1(test, 1, 2);
 
     printMulDimArr(test, rows, cols);
 
-    fun1(test,1,2);
+    fun1(test, 1, 2);
 
-    printMulDimArr(test,rows,cols);
+    printMulDimArr(test, rows, cols);
 
-    fun2(test,rows,0,1);
+    fun2(test, rows, 0, 1);
 
-    printMulDimArr(test,rows,cols);
-    
+    printMulDimArr(test, rows, cols);
 
     return 0;
 }
@@ -66,7 +65,8 @@ void fun1(void **mulDimArr, int idxROne, int idxRTwo)
 
 void ptrSwap(void **a, void **b)
 {
-    void *temp = *a;
+    void *temp;
+    temp = *a;
     *a = *b;
     *b = temp;
 }

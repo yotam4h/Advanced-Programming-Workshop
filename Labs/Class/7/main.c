@@ -29,11 +29,11 @@ int main()
 
     printMulDimArr(test, rows, cols);
 
-    fun1(test, 1, 2);
+    fun1((void**)test, 0, 1);
 
     printMulDimArr(test, rows, cols);
 
-    fun1(test, 1, 2);
+    fun1((void**)test, 0, 1);
 
     printMulDimArr(test, rows, cols);
 
@@ -41,7 +41,24 @@ int main()
 
     printMulDimArr(test, rows, cols);
 
+    freeMulDimArr(test);
+
+    test = NULL;
+
     return 0;
+}
+
+void freeMulDimArr(int **mulDimArr, int n)
+{
+    int i;
+    for(i=0;i<n;i++)
+    {
+        free(mulDimArr[i]);
+        mulDimArr[i] = NULL;
+    }
+    free(mulDimArr);
+    *mulDimArr = NULL;
+    mulDimArr = NULL;
 }
 
 void printMulDimArr(int **mulDimArr, int rows, int cols)

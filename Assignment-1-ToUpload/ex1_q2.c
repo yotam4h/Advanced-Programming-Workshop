@@ -123,11 +123,11 @@ double distance(point *p1, point *p2)
     // your code:
 
     // declare variables for readability, also to avoid using pow().
-    double xdis = p1->x - p2->x,
-           ydis = p1->y - p2->y;
+    double xdis = (double)p1->x - (double)p2->x,
+           ydis = (double)p1->y - (double)p2->y;
 
     // return the distance
-    return sqrt(xdis * xdis + ydis * ydis);
+    return sqrt(fabs((xdis * xdis) + (ydis * ydis)));
 }
 // --------------------------- //
 

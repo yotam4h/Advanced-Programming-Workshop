@@ -78,29 +78,20 @@ int validateRectangle(rectangle *rec)
 {
 	// your code:
 
-	enum State
+	// if co-ordinates are valid
+	if (rec->xTopSmall < rec->xButtomRight && rec->yTopSmall > rec->yButtomRight)
 	{
-		Invalid,
-		Valid,
-		Point
-	};
-
-	// ! change logic - validate true situation, else return false
+		return 1;
+	}
 
 	// if co-ordinates make a point
 	if (rec->xTopSmall == rec->xButtomRight && rec->yTopSmall == rec->yButtomRight)
 	{
-		return Point;
+		return 2;
 	}
 
-	// if co-ordinates make a line, or TopSmall is lower than ButtomRight, topSmall is more right to ButtomRight
-	if (rec->xTopSmall >= rec->xButtomRight || rec->yTopSmall >= rec->yButtomRight)
-	{
-		return Invalid;
-	}
-
-	// rectangle is valid
-	return Valid;
+	// else invalid
+	return 0;
 }
 // --------------------------- //
 
@@ -129,9 +120,9 @@ rectangle scanRectangle()
 		printf("Please enter bottom right point y: ");
 		scanf("%d", &newRec.yButtomRight);
 
-		if ((isValid = validateRectangle(&newRec == 0)) == 0)
+		if ((isValid = validateRectangle(&newRec)) == 0)
 		{
-			printf("Not a valid rectangle, try again.\n");
+			printf("\nNot a valid rectangle, try again.\n");
 		}
 	} while (isValid == 0);
 
@@ -182,6 +173,7 @@ recElement *createElement()
 recElement *createRectList()
 {
 	// your code:
+	// ! mistake in <returns> part ^^^^^^^^^^^^^^^^^^
 
 	recElement *head = NULL, *current = NULL;
 
@@ -196,12 +188,8 @@ recElement *createRectList()
 	{
 		current->next = createElement();
 
-		// if memory was allocated
-		if (current != NULL)
-		{
-			// advance 'current'
-			current = current->next;
-		}
+		// advance 'current'
+		current = current->next;
 	}
 	// no need to nullify 'current', will nullify itself
 

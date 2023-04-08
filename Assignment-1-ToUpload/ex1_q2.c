@@ -202,7 +202,7 @@ int removePoint(polygon *poly, int idx)
 {
     // your code:
 
-    int i;
+    int i, j;
     point *temp = NULL;
 
     // if index is valid
@@ -215,12 +215,11 @@ int removePoint(polygon *poly, int idx)
         if (temp != NULL)
         {
             // copy all points except the index to remove
-            for (i = 0; i < poly->n - 2; i++)
+            for (i = j = 0; i < ((poly->n) - 1); i++)
             {
-                if (i < idx)
-                    temp[i] = poly->points[i];
-                else if (i > idx)
-                    temp[i] = poly->points[i + 1];
+                if (j == idx)
+                    j++;
+                temp[i] = poly->points[j++];
             }
 
             // free old points array

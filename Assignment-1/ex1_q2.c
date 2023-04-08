@@ -169,7 +169,7 @@ double calculateScope(point *points, int n)
 int addPoint(polygon *poly)
 {
     // your code:
-
+    // ! losing old points array, should use temp pointer
     // allocate new memory for the new point
     poly->points = (point *)realloc(poly->points, (poly->n + 1) * sizeof(point));
 

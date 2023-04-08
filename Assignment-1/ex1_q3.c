@@ -78,7 +78,12 @@ int validateRectangle(rectangle *rec)
 {
 	// your code:
 
-	enum State {Invalid, Valid, Point};
+	enum State
+	{
+		Invalid,
+		Valid,
+		Point
+	};
 
 	// ! change logic - validate true situation, else return false
 
@@ -124,7 +129,7 @@ rectangle scanRectangle()
 		printf("Please enter bottom right point y: ");
 		scanf("%d", &newRec.yButtomRight);
 
-		if((isValid = validateRectangle(&newRec == 0)) == 0)
+		if ((isValid = validateRectangle(&newRec == 0)) == 0)
 		{
 			printf("Not a valid rectangle, try again.\n");
 		}
@@ -143,7 +148,7 @@ rectangle scanRectangle()
 recElement *createElement()
 {
 	// your code:
-	
+
 	recElement *newElement = NULL;
 
 	// allocate memory for recElement
@@ -183,26 +188,22 @@ recElement *createRectList()
 	// deal with 'head' element
 	head = createElement();
 
-	// if memory was allocated
-	if (head != NULL)
+	// starting to work with 'current' pointer
+	current = head;
+
+	// loop new elements
+	while (current != NULL)
 	{
-		// starting to work with 'current' pointer
-		current = head;
+		current->next = createElement();
 
-		// loop new elements
-		while (current != NULL)
+		// if memory was allocated
+		if (current != NULL)
 		{
-			current->next = createElement();
-
-			// if memory was allocated
-			if (current != NULL)
-			{
-				// advance 'current'
-				current = current->next;
-			}
+			// advance 'current'
+			current = current->next;
 		}
-		// no need to nullify 'current', will nullify itself
 	}
+	// no need to nullify 'current', will nullify itself
 
 	return head; // NULL if malloc failed on 'head' element
 }

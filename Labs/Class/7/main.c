@@ -57,7 +57,6 @@ void freeMulDimArr(int **mulDimArr, int n)
         mulDimArr[i] = NULL;
     }
     free(mulDimArr);
-    *mulDimArr = NULL;
     mulDimArr = NULL;
 }
 

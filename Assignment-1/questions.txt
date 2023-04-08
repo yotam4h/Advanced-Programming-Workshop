@@ -1,5 +1,0 @@
-1. best practice for declaring temp pointer to avoid using pointer to pointer ?
-
-2. best practice for functions:
-                                a. multiple return statements ?
-                                b. if else statements ? 

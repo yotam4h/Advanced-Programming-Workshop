@@ -236,7 +236,7 @@ int removePoint(polygon *poly, int idx)
         }
     }
 
-    return 0;
+    return 0; // if index is invalid or if malloc failed
 }
 // --------------------------- //
 

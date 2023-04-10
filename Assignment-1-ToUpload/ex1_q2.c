@@ -11,8 +11,8 @@
 // --------------------------- //
 //
 //	Assigned by:
-//		Student1_Full_Name #ID
-//		Student2_Full_Name #ID
+//		Shira Ayal #207916768
+//		Yotam Haimovitch #207041393
 //
 // --------------------------- //
 

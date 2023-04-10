@@ -10,8 +10,8 @@
 // --------------------------- //
 //
 //	Assigned by:
-//		Student1_Full_Name #ID
-//		Student2_Full_Name #ID
+//		Shira Ayal #207916768
+//		Yotam Haimovitch #207041393
 //
 // --------------------------- //
 
@@ -220,7 +220,7 @@ rectangle findSmallest(recElement *head)
 		smallest.yTopSmall = head->Rect.yTopSmall;
 		smallest.xTopSmall = head->Rect.xTopSmall;
 
-		// advance 'current'
+		// advance 'head'
 		head = head->next;
 	}
 

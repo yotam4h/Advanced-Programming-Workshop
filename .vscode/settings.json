@@ -8,7 +8,11 @@
     "cstdlib": "c",
     "stdbool.h": "c",
     "math.h": "c",
-    "random": "c"
+    "random": "c",
+    "ctype.h": "c",
+    "cctype": "c",
+    "features.h": "c",
+    "types.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

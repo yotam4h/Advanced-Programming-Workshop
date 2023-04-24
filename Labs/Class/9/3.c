@@ -43,7 +43,7 @@ void reduceWhiteSpace(char *s)
 
 void squeezeSpaces(char *s)
 {
-    char *read = s, *write=s;
+    char *read = s, *write = s;
     bool space = false;
 
     if (s == NULL || *s == '\0')

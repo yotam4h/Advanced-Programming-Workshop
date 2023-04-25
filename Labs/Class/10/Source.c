@@ -12,10 +12,9 @@ void swapch(char *, char *);
 void convert(char *);
 int convertChar(char *);
 int inSegment(int, int, int);
-int toUpper(int);
-int toLower(int);
+char toUpper(char);
+char toLower(char);
 char *toSeries(int);
-void eraseChar(char *org);
 
 int main()
 {
@@ -88,14 +87,12 @@ void swapch(char *a, char *b)
 
 void convert(char *string)
 {
-    int i;
     if (string == NULL)
         return;
 
     while (*string)
     {
-        i = convertChar(string);
-        string += i;
+        string += convertChar(string);
     }
 }
 
@@ -108,10 +105,10 @@ void convert(char *string)
 int convertChar(char *string)
 {
     char *series = NULL;
-    char buffer[100];
+    char buffer[BUFFER];
     int length = 0;
 
-    if (inSegment(*string, 'a', 'f') || inSegment(*string, 'A', 'F') || inSegment(*string, '0', '9')) // [a-f] or [A-F] or [1-9]
+    if (inSegment(*string, 'a', 'f') || inSegment(*string, 'A', 'F') || inSegment(*string, '1', '9')) // [a-f] or [A-F] or [1-9]
     {
         series = toSeries(*string);
         strcpy(buffer, series);
@@ -136,7 +133,7 @@ int convertChar(char *string)
     }
     else // any other char
     {
-        eraseChar(string);
+        strcpy(string, string + 1);
     }
 
     return length;
@@ -153,17 +150,25 @@ int convertChar(char *string)
  */
 int inSegment(int x, int begin, int end)
 {
+    if (begin > end)
+    {
+        return 0;
+    }
     return (begin <= x && x <= end);
 }
 
-int toUpper(int ch)
+char toUpper(char ch)
 {
-    return ch - 'a' + 'A';
+    if (!inSegment(ch, 'a', 'z'))
+        return ch;
+    return (char)(ch - 'a' + 'A');
 }
 
-int toLower(int ch)
+char toLower(char ch)
 {
-    return ch - 'A' + 'a';
+    if (!inSegment(ch, 'A', 'Z'))
+        return ch;
+    return (char)(ch - 'A' + 'a');
 }
 
 /**
@@ -182,8 +187,6 @@ char *toSeries(int ch)
          xupper[] = "ABCDEF";
 
     char *dest = (char *)malloc(16 * sizeof(char));
-    if (!dest)
-        return NULL;
 
     dest[0] = '\0';
 
@@ -204,21 +207,11 @@ char *toSeries(int ch)
         strncat(dest, xupper, ch - 'A' + 1);
         dest[10 + ch - 'A'] = '\0';
     }
-
-    return dest;
-}
-
-void eraseChar(char *org)
-{
-    char buffer[BUFFER];
-    buffer[0] = '\0';
-    buffer[sizeof(buffer) - 1] = '\0';
-    if (org == NULL || !(*org))
+    else
     {
-        return;
+        free(dest);
+        dest = NULL;
     }
 
-    strcpy(buffer, org + 1);
-    strcpy(org, buffer);
-    buffer[0] = '\0';
+    return dest;
 }

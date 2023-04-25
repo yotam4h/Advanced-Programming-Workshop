@@ -209,7 +209,7 @@ void eraseChar(char *org)
     char buffer[BUFFER];
     buffer[0] = '\0';
     buffer[sizeof(buffer) - 1] = '\0';
-    if (org == NULL || *org)
+    if (org == NULL || !(*org))
     {
         return;
     }

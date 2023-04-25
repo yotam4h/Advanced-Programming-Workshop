@@ -11,8 +11,8 @@
 // --------------------------- //
 //
 //	Assigned by:
-//		Student1_Full_Name #ID
-//		Student2_Full_Name #ID
+//		Shira Ayal #207916768
+//		Yotam Haimovitch #207041393
 //
 // --------------------------- //
 
@@ -123,11 +123,11 @@ double distance(point *p1, point *p2)
     // your code:
 
     // declare variables for readability, also to avoid using pow().
-    double xdis = p1->x - p2->x,
-           ydis = p1->y - p2->y;
+    double xdis = (double)p1->x - (double)p2->x,
+           ydis = (double)p1->y - (double)p2->y;
 
     // return the distance
-    return sqrt(xdis * xdis + ydis * ydis);
+    return sqrt(fabs((xdis * xdis) + (ydis * ydis)));
 }
 // --------------------------- //
 
@@ -147,7 +147,7 @@ double calculateScope(point *points, int n)
     if (points != NULL && n > 2)
     {
         // iterate over all points and sum the distance between them
-        for (i = 0; i < n - 1; i++) 
+        for (i = 0; i < n - 1; i++)
         {
             scope += distance((points + i), (points + i + 1));
         }
@@ -169,20 +169,25 @@ double calculateScope(point *points, int n)
 int addPoint(polygon *poly)
 {
     // your code:
-    // ! losing old points array, should use temp pointer
-    // allocate new memory for the new point
-    poly->points = (point *)realloc(poly->points, (poly->n + 1) * sizeof(point));
 
-    // if the allocation was successful
-    if (poly->points != NULL)
+    point *temp = NULL;
+
+    // allocate new memory for the new point
+    temp = (point *)realloc(poly->points, (poly->n + 1) * sizeof(point));
+
+    // if allocation worked
+    if (temp != NULL)
     {
+        poly->points = temp;
+        temp = NULL;
+
         scanPoint(poly->points + poly->n);
         poly->n++;
         poly->scope = calculateScope(poly->points, poly->n);
         return 1;
     }
 
-    return 0; // if the allocation failed
+    return 0; // if allocation failed
 }
 // --------------------------- //
 
@@ -196,36 +201,42 @@ int addPoint(polygon *poly)
 int removePoint(polygon *poly, int idx)
 {
     // your code:
-    
-    int i;
-    point *temp = NULL;  
+
+    int i, j;
+    point *temp = NULL;
 
     // if index is valid
     if (0 <= idx && idx < poly->n)
     {
-        // move all points after the index to the left
-        for (i = idx; i < (poly->n - 1); i++)
-        {
-            poly->points[i] = poly->points[i + 1];
-        }
+        // allocate
+        temp = (point *)malloc((poly->n - 1) * sizeof(point));
 
-        // reallocate memory for the new size
-        temp = (point *)realloc(poly->points, (poly->n - 1) * sizeof(point));
-
-        // if the allocation was successful, should always be true (but just in case ...).
-        // ! this also fucks up [points array] if it's false !
-        // ? should duplicate the array before moving the points, and not corrupt the original data if the allocation fails ?
+        // incase malloc fails
         if (temp != NULL)
         {
+            // copy all points except the index to remove
+            for (i = j = 0; i < ((poly->n) - 1); i++)
+            {
+                if (j == idx)
+                    j++;
+                temp[i] = poly->points[j++];
+            }
+
+            // free old points array
+            free(poly->points);
+            // point to new array
             poly->points = temp;
+            // nullify pointer
             temp = NULL;
+
+            // update size and scope
             poly->n--;
             poly->scope = calculateScope(poly->points, poly->n);
             return 1;
         }
     }
 
-    return 0; // if the index is invalid
+    return 0; // if index is invalid or if malloc failed
 }
 // --------------------------- //
 

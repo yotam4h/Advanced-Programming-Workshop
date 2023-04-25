@@ -7,7 +7,12 @@
     "floatn.h": "c",
     "cstdlib": "c",
     "stdbool.h": "c",
-    "math.h": "c"
+    "math.h": "c",
+    "random": "c",
+    "ctype.h": "c",
+    "cctype": "c",
+    "features.h": "c",
+    "types.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
@@ -28,8 +33,12 @@
   ],
   "C_Cpp_Runner.enableWarnings": true,
   "C_Cpp_Runner.warningsAsError": false,
-  "C_Cpp_Runner.compilerArgs": [],
-  "C_Cpp_Runner.linkerArgs": [],
+  "C_Cpp_Runner.compilerArgs": [
+    "-lm"
+  ],
+  "C_Cpp_Runner.linkerArgs": [
+    "-lm"
+  ],
   "C_Cpp_Runner.includePaths": [],
   "C_Cpp_Runner.includeSearch": [
     "*",
@@ -44,5 +53,6 @@
     "**/.vscode/**"
   ],
   "C_Cpp_Runner.useAddressSanitizer": false,
-  "C_Cpp.errorSquiggles": "disabled"
+  "C_Cpp.errorSquiggles": "disabled",
+  "C_Cpp_Runner.showCompilationTime": false
 }

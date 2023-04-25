@@ -11,8 +11,8 @@
 // --------------------------- //
 //
 //	Assigned by:
-//		Student1_Full_Name #ID
-//		Student2_Full_Name #ID
+//		Shira Ayal #207916768
+//		Yotam Haimovitch #207041393
 //
 // --------------------------- //
 
@@ -39,7 +39,7 @@ int main()
 	// write output:
 	printf("Output:\n");
 	printf("Size of k: %d\n", k);
-	printf("Sorted array:\n");
+	printf("Sorted arrayPtr:\n");
 	printArray(arr, n);
 	free(arr);
 
@@ -53,7 +53,7 @@ int *scanArray(int *n)
 	int i;
 	int *arr;
 
-	printf("Enter array size: ");
+	printf("Enter arrayPtr size: ");
 	scanf("%d", n);
 
 	arr = (int *)malloc(sizeof(int) * (*n));
@@ -88,45 +88,40 @@ int arrangeArray(int **arr, int n)
 {
 	// your code:
 
-	// ? best practice: temp pointer to array, to avoid dereferencing twice ?
-
-	int i, k, *array = *arr, *temp = NULL;
+	int i, k, *arrayPtr = *arr;
 
 	// find size of first group (k)
-	for (i = 1; i < n; i++)
+	for (i = 1, k = 0; i < n; i++)
 	{
-		if (array[i] < array[i - 1])
+		if (arrayPtr[i] < arrayPtr[i - 1])
 		{
 			k = i;
 			break;
 		}
 	}
 
-	// realloce 'array' and add size k to the end of the 'array'
-	temp = (int *)realloc(array, sizeof(int) * (n + k));
-
-	// incase realloc fails
-	if (temp != NULL)
+	if (k == 0)
 	{
-		array = temp;
-		temp = NULL;
-
-		// copy the first group to the end of the 'array'
-		memcpy(array + n, array, sizeof(int) * k);
-
-		// copy from 'array[k]' to 'array[n+1]' into the start of 'array'
-		memcpy(array, array + k, sizeof(int) * (n + k));
-
-		// reallocate 'array' to the original size
-		// ! need to use temp pointer again
-		array = (int *)realloc(array, sizeof(int) * n);
+		return 0;
 	}
 
-	// input 'array' address to 'arr', and nullify 'array';
-	*arr = array; // return by reference: original 'array' if realloc failed, else sorted 'array'
-	array = NULL;
+	// realloce 'arrayPtr' and add size k to the end of the 'arrayPtr'
+	arrayPtr = (int *)realloc(arrayPtr, sizeof(int) * (n + k));
+
+	// copy the first group to the end of the 'arrayPtr'
+	memcpy(arrayPtr + n, arrayPtr, sizeof(int) * k);
+
+	// copy from 'arrayPtr[k]' to 'arrayPtr[n+1]' into the start of 'arrayPtr'
+	memcpy(arrayPtr, arrayPtr + k, sizeof(int) * (n + k));
+
+	// reallocate 'arrayPtr' to the original size
+	arrayPtr = (int *)realloc(arrayPtr, sizeof(int) * n);
+
+	// input 'arrayPtr' address to 'arr', and nullify 'arrayPtr';
+	*arr = arrayPtr; // return by reference: sorted 'arrayPtr'
+	arrayPtr = NULL;
 
 	// return size of first group
 	return k;
-	}
+}
 // --------------------------- //

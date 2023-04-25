@@ -16,6 +16,8 @@ char toUpper(char);
 char toLower(char);
 char *toSeries(int);
 
+void convert2(char *);
+
 int main()
 {
     ex3();
@@ -41,7 +43,7 @@ void ex3()
     char test[100];
     strcpy(test, "B$q0#3Me");
     puts(test);
-    convert(test);
+    convert2(test);
     puts(test);
 }
 
@@ -214,4 +216,54 @@ char *toSeries(int ch)
     }
 
     return dest;
+}
+
+void convert2(char *str)
+{
+    int i, j, k;
+    char buffer[BUFFER];
+
+    for (i = j = 0; str[i]; i++)
+    {
+        if (inSegment(str[i], '1', '9')) // [1,9]
+        {
+            for (k = '1'; k <= str[i]; k++)
+            {
+                buffer[j++] = (char)k;
+            }
+        }
+        else if (inSegment(str[i], 'a', 'f')) // [a,f]
+        {
+            for (k = '1'; k <= '9'; k++)
+            {
+                buffer[j++] = (char)k;
+            }
+            for (k = 'a'; k <= str[i]; k++)
+            {
+                buffer[j++] = (char)k;
+            }
+        }
+        else if (inSegment(str[i], 'A', 'F')) // [A,F]
+        {
+            for (k = '1'; k <= '9'; k++)
+            {
+                buffer[j++] = (char)k;
+            }
+            for (k = 'A'; k <= str[i]; k++)
+            {
+                buffer[j++] = (char)k;
+            }
+        }
+        else if (inSegment(str[i], 'g', 'z')) // [g-z]
+        {
+            buffer[j++] = (char)(str[i] - 'a' + 'A');
+        }
+        else if (inSegment(str[i], 'G', 'Z')) // [G-Z]
+        {
+            buffer[j++] = (char)(str[i] - 'A' + 'a');
+        }
+    }
+    buffer[j] = '\0';
+
+    strcpy(str, buffer);
 }

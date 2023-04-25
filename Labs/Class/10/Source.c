@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #define BUFFER 100
 
 void ex2();
@@ -11,10 +12,10 @@ void swapch(char *, char *);
 void convert(char *);
 int convertChar(char *);
 int inSegment(int, int, int);
-char toUpper(char);
-char toLower(char);
-int toSeries(char *);
-void eraseChar(char *);
+int toUpper(int);
+int toLower(int);
+char *toSeries(int);
+void eraseChar(char *org);
 
 int main()
 {
@@ -40,7 +41,6 @@ void ex3()
 {
     char test[100];
     strcpy(test, "B$q0#3Me");
-    //strcpy(test, "A");
     puts(test);
     convert(test);
     puts(test);
@@ -103,15 +103,26 @@ void convert(char *string)
  *
  * @param string A pointer to a character array (string) that will be modified by the function.
  *
- * @return offset index.
+ * @return integer value, length of added changes to the string.
  */
 int convertChar(char *string)
 {
+    char *series = NULL;
+    char buffer[100];
     int length = 0;
 
     if (inSegment(*string, 'a', 'f') || inSegment(*string, 'A', 'F') || inSegment(*string, '0', '9')) // [a-f] or [A-F] or [1-9]
     {
-        length = toSeries(string);
+        series = toSeries(*string);
+        strcpy(buffer, series);
+        {
+            length = strlen(series);
+            free(series);
+            series = NULL;
+        }
+        strcat(buffer, string + 1);
+        strcpy(string, buffer);
+        buffer[0] = '\0';
     }
     else if (inSegment(*string, 'g', 'z')) // [g-z]
     {
@@ -145,63 +156,56 @@ int inSegment(int x, int begin, int end)
     return (begin <= x && x <= end);
 }
 
-char toUpper(char ch)
+int toUpper(int ch)
 {
-    if (!inSegment(ch, 'a', 'z'))
-        return ch;
-    return (char)(ch - 'a' + 'A');
+    return ch - 'a' + 'A';
 }
 
-char toLower(char ch)
+int toLower(int ch)
 {
-    if (!inSegment(ch, 'A', 'Z'))
-        return ch;
-    return (char)(ch - 'A' + 'a');
+    return ch - 'A' + 'a';
 }
 
-int toSeries(char *org)
+/**
+ * The function takes an integer input and returns a string representing a series of numbers or letters
+ * based on the input value.
+ *
+ * @param ch The input parameter `ch` is an integer representing a hexadecimal digit.
+ *
+ * @return The function `toSeries` returns a dynamically allocated character array (`char*`) that
+ * contains a series of characters based on the input `ch`.
+ */
+char *toSeries(int ch)
 {
     char num[] = "123456789",
          xlower[] = "abcdef",
-         xupper[] = "ABCDEF",
-         series[30],
-         buffer[BUFFER];
+         xupper[] = "ABCDEF";
 
-    series[0] = '\0';
-    buffer[0] = '\0';
-    buffer[sizeof(buffer) - 1] = '\0';
+    char *dest = (char *)malloc(16 * sizeof(char));
+    if (!dest)
+        return NULL;
 
-    if (org == NULL || !(*org))
+    dest[0] = '\0';
+
+    if (inSegment(ch, '1', '9'))
     {
-        return 0;
+        strncpy(dest, num, ch - '0');
+        dest[ch - '0'] = '\0';
+    }
+    else if (inSegment(ch, 'a', 'f'))
+    {
+        strcpy(dest, num);
+        strncat(dest, xlower, ch - 'a' + 1);
+        dest[10 + ch - 'a'] = '\0';
+    }
+    else if (inSegment(ch, 'A', 'F'))
+    {
+        strcpy(dest, num);
+        strncat(dest, xupper, ch - 'A' + 1);
+        dest[10 + ch - 'A'] = '\0';
     }
 
-    if (inSegment(*org, '1', '9'))
-    {
-        strncpy(series, num, *org - '0');
-        series[*org - '0'] = '\0';
-    }
-    else if (inSegment(*org, 'a', 'f'))
-    {
-        strcpy(series, num);
-        strncat(series, xlower, *org - 'a' + 1);
-        series[10 + *org - 'a'] = '\0';
-    }
-    else if (inSegment(*org, 'A', 'F'))
-    {
-        strcpy(series, num);
-        strncat(series, xupper, *org - 'A' + 1);
-        series[10 + *org - 'A'] = '\0';
-    }
-
-    if (*series)
-    {
-        strcpy(buffer,series);
-        strcat(buffer, org + 1);
-        strcpy(org, buffer);
-    }
-
-    return strlen(buffer);
+    return dest;
 }
 
 void eraseChar(char *org)
@@ -209,7 +213,7 @@ void eraseChar(char *org)
     char buffer[BUFFER];
     buffer[0] = '\0';
     buffer[sizeof(buffer) - 1] = '\0';
-    if (org == NULL || *org)
+    if (org == NULL || !(*org))
     {
         return;
     }

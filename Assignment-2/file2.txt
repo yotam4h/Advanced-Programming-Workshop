@@ -1,0 +1,2 @@
+unsigned int * ptr ;
+	double mat[2][4], arr [3]	 , f;

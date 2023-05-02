@@ -27,10 +27,10 @@ void decode(char *str);
 // Main section:
 // --------------------------------------- //
 int main()
-{	
+{
 	char str1[] = "Hr(o Zjeno#";
 	char str2[] = "H gmlw xmq(jo ojascyr vgpz xmqjcyzxia0 Vc bmqdn zjh gyrw acaf jghdox 0 np vmnko0 dvlwvfsf3 Mms hd xmq cmj-l lgjv3 H/k fmefq sm acz7";
-	
+
 	// Start Program:
 	printf("Start Program\n");
 
@@ -47,15 +47,46 @@ int main()
 }
 // --------------------------- //
 
-
 /// <summary>
 /// The function receives a pointer to a string,
 /// and decode it according to the assignment requirment
 /// </summary>
 /// <param>char *str - encoded string</param>
 /// <returns>None</returns>
-void decode(char* str)
+void decode(char *str)
 {
 	// your code:
+	int i = 0, poweredTwo = 1, decrease = 1;
+	while (*str)
+	{
+		if (*str == ' ')
+		{
+			poweredTwo = 1;
+		}
+		else
+		{
+			if ('a' <= *str && *str <= 'z') // [a,z]
+			{
+				*str %= 'a';
+				*str += poweredTwo;
+				*str %= 26;
+				*str += 'a';
+				poweredTwo <<= 1;
+			}
+			else if ('A' <= *str && *str <= 'Z') // [A,Z]
+			{
+				*str %= 'A';
+				*str += poweredTwo;
+				*str %= 26;
+				*str += 'A';
+				poweredTwo <<= 1;
+			}
+			else // if('!' <= *str && *str <= '@') // [!,@]
+			{
+				*str -= decrease++;
+			}
+		}
+		str++;
+	}
 }
 // --------------------------- //

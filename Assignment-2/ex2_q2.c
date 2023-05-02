@@ -90,6 +90,63 @@ int main()
 int createArrayAndList(int A[][COLS], list **lst, four **arr, int rows, int cols)
 {
 	// your code:
+
+	// variable declaration
+	int i, j, k, count = 0;
+	list *current = NULL;
+	// TODO: edgecases
+
+	// count requested elements, O(n)
+	for (i = 0; i < rows; i++)
+	{
+		for (j = 0; j < cols; j++)
+		{
+			if ((A[i][j] - j) == (j - i))
+			{
+				count++;
+			}
+		}
+	}
+	if (count == 0)
+		return 0;
+
+	// allocate array and list
+	(*arr) = (four *)malloc(count * sizeof(four));
+	if ((*arr) == NULL)
+		return 0;
+
+	// populate array
+	k = 0;
+	for (i = 0; i < rows; i++)
+	{
+		for (j = 0; j < cols; j++)
+		{
+			if ((A[i][j] - j) == (j - i))
+			{
+				(*arr)[k++] = createFour(i, j, j - i, A[i][j]);
+			}
+		}
+	}
+	// allocate list
+	(*lst) = createElement(**arr);
+	current = (*lst);
+	if (current == NULL)
+	{
+		freeDynamic(lst, arr);
+		return 0;
+	}
+	for (i = 1; i < count; i++)
+	{
+		current->next = createElement((*arr)[i]);
+		if (current->next == NULL)
+		{
+			freeDynamic(lst, arr);
+			return 0;
+		}
+		current = current->next;
+	}
+
+	return count;
 }
 // --------------------------- //
 
@@ -105,8 +162,7 @@ int createArrayAndList(int A[][COLS], list **lst, four **arr, int rows, int cols
 four createFour(int i, int j, int d, int value)
 {
 	// your code:
-	four temp = {i, j, d, value};
-	return temp;
+	return (four){i, j, d, value};
 }
 // --------------------------- //
 
@@ -119,6 +175,16 @@ four createFour(int i, int j, int d, int value)
 list *createElement(four data)
 {
 	// your code:
+	list *element = NULL;
+	// TODO: edgecases (data.i/j<0)
+
+	element = (list *)malloc(sizeof(list));
+	if (element == NULL)
+		return NULL;
+	element->next = NULL;
+	element->data = data;
+
+	return element;
 }
 // --------------------------- //
 
@@ -132,6 +198,12 @@ list *createElement(four data)
 void printArray(four *arr, int n)
 {
 	// your code:
+	int i;
+	for (i = 0; i < n - 1; i++)
+	{
+		printf("[%d,%d,%d,%d], ", arr[i].i, arr[i].j, arr[i].d, arr[i].value);
+	}
+	printf("[%d,%d,%d,%d]\n", arr[n - 1].i, arr[n - 1].j, arr[n - 1].d, arr[n - 1].value);
 }
 // --------------------------- //
 
@@ -144,6 +216,12 @@ void printArray(four *arr, int n)
 void printList(list *lst)
 {
 	// your code:
+	while (lst != NULL)
+	{
+		printf("[%d,%d,%d,%d] -> ", lst->data.i, lst->data.j, lst->data.d, lst->data.value);
+		lst = lst->next;
+	}
+	printf("[NULL]\n");
 }
 // --------------------------- //
 
@@ -156,5 +234,20 @@ void printList(list *lst)
 void freeDynamic(list **lst, four **arr)
 {
 	// your code:
+	list *current = NULL, *forward = NULL;
+
+	// free and nullify array
+	free(*arr);
+	*arr = NULL;
+
+	// free and nullify list
+	current = (*lst);
+	while (current != NULL)
+	{
+		forward = current->next;
+		free(current);
+		current = forward;
+	}
+	(*lst) = NULL;
 }
 // --------------------------- //

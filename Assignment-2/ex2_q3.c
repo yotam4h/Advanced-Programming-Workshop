@@ -56,7 +56,7 @@ int main()
 void decode(char *str)
 {
 	// your code:
-	int i = 0, poweredTwo = 1, decrease = 1;
+	int poweredTwo = 1, decrease = 1;
 	while (*str)
 	{
 		if (*str == ' ')
@@ -67,23 +67,23 @@ void decode(char *str)
 		{
 			if ('a' <= *str && *str <= 'z') // [a,z]
 			{
-				*str %= 'a';
-				*str += poweredTwo;
+				*str += poweredTwo % 26;
+				*str -= 'a';
 				*str %= 26;
 				*str += 'a';
-				poweredTwo <<= 1;
+				poweredTwo *= 2;
 			}
 			else if ('A' <= *str && *str <= 'Z') // [A,Z]
 			{
-				*str %= 'A';
-				*str += poweredTwo;
+				*str += poweredTwo % 26;
+				*str -= 'A';
 				*str %= 26;
 				*str += 'A';
-				poweredTwo <<= 1;
+				poweredTwo *= 2;
 			}
 			else // if('!' <= *str && *str <= '@') // [!,@]
 			{
-				*str -= decrease++;
+				*str = *str - decrease++;
 			}
 		}
 		str++;

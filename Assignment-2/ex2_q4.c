@@ -17,15 +17,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define scanf_s scanf
-#define PATH1 "c:\\temp\\file1.txt"
-#define PATH2 "c:\\temp\\file2.txt"
-#define PATH3 "c:\\temp\\file3.txt"
+// #define PATH1 "c:\\temp\\file1.txt"
+// #define PATH2 "c:\\temp\\file2.txt"
+// #define PATH3 "c:\\temp\\file3.txt"
+#define PATH1 "file1.txt"
+#define PATH2 "file2.txt"
+#define PATH3 "file3.txt"
 
 // --------------------------------------- //
 // Functions declration section:
 // --------------------------------------- //
 
-int memoryReport(char* filename);
+int memoryReport(char *filename);
+int flenLongestLine(FILE *fd);
+
 // --------------------------------------- //
 // Main section:
 // --------------------------------------- //
@@ -51,15 +56,63 @@ int main()
 }
 // --------------------------- //
 
-
 /// <summary>
 /// The function receives a pointer to a string, representing a path to a file.
 /// The function output all varibles declerations and their size in byte.
 /// </summary>
 /// <param>char *filename - valid path to a file</param>
 /// <returns>total bytes required</returns>
-int memoryReport(char* filename)
+int memoryReport(char *filename)
 {
 	// your code:
+	// data types: char, short, int, unsigned int, long, long long, float, double
+	// calcVar: dataType*sizeof(dataType)*howMany
+
+	FILE *fd = NULL;
+	char *buffer = NULL;
+	int buffersize;
+	// TODO: edgecases
+
+	fd = fopen(filename, "r");
+	// count buffer size (count the longest line)
+	buffersize = flenLongestLine(fd);
+	// allocate buffer
+	buffer = (char *)malloc(buffersize * sizeof(char));
+	// TODO: if NULL
+
+	fgets(buffer, buffersize, fd);
+	fputs(buffer,stdout);
+
+	// read line
+	// memory report line
+	fclose(fd);
+	fd = NULL;
+	// TODO: free and nullify buffer
+	return 0;
+}
+// file: length of longest line
+int flenLongestLine(FILE *fd)
+{
+	int count = 0, max = 0;
+	char ch;
+
+	if (fd == NULL)
+		return -1;
+
+	fseek(fd, 0, SEEK_SET);
+
+	while ((ch = fgetc(fd)) != EOF)
+	{
+		if (ch == ';')
+		{
+			max = count > max ? count : max;
+			count = 0;
+		}
+		count++;
+	}
+
+	fseek(fd, 0, SEEK_SET);
+
+	return max + 1;
 }
 // --------------------------- //

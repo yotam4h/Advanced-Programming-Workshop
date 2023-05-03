@@ -11,7 +11,7 @@ void f1()
     int lines;
     lines = countLines("in.txt");
     if (lines != -1)
-        printf("%d", lines);
+        printf("%d\n", lines);
 }
 void f2()
 {
@@ -24,8 +24,13 @@ void f3()
 }
 int main()
 {
+    int i;
+    void (*f[3])() = {f1, f2, f3};
     createFile("in.txt");
-    f3();
+    for (i = 0; i < 3; i++)
+    {
+        (*f[i])();
+    }
     return EXIT_SUCCESS;
 }
 

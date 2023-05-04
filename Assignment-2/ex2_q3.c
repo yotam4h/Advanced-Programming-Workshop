@@ -16,6 +16,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #define scanf_s scanf
 
 // --------------------------------------- //
@@ -57,15 +58,18 @@ void decode(char *str)
 {
 	// your code:
 	int poweredTwo = 1, decrease = 1;
+	if (str == NULL)
+		return;
+
 	while (*str)
 	{
-		if (*str == ' ')
+		if (isspace(*str)) //(*str == ' ')
 		{
 			poweredTwo = 1;
 		}
 		else
 		{
-			if ('a' <= *str && *str <= 'z') // [a,z]
+			if (islower(*str)) //('a' <= *str && *str <= 'z') // [a,z]
 			{
 				*str += poweredTwo % 26;
 				*str -= 'a';
@@ -73,7 +77,7 @@ void decode(char *str)
 				*str += 'a';
 				poweredTwo *= 2;
 			}
-			else if ('A' <= *str && *str <= 'Z') // [A,Z]
+			else if (isupper(*str)) //('A' <= *str && *str <= 'Z') // [A,Z]
 			{
 				*str += poweredTwo % 26;
 				*str -= 'A';

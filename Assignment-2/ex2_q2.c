@@ -94,7 +94,9 @@ int createArrayAndList(int A[][COLS], list **lst, four **arr, int rows, int cols
 	// variable declaration
 	int i, j, k, count = 0;
 	list *current = NULL;
-	// TODO: edgecases
+	// edgecases
+	if (**A == NULL || lst == NULL || arr == NULL || rows < 0 || cols < 0)
+		return -1;
 
 	// count requested elements, O(n)
 	for (i = 0; i < rows; i++)
@@ -235,6 +237,10 @@ void freeDynamic(list **lst, four **arr)
 {
 	// your code:
 	list *current = NULL, *forward = NULL;
+	
+	// edgecases
+	if (lst == NULL || arr == NULL)
+		return;
 
 	// free and nullify array
 	free(*arr);
@@ -248,6 +254,7 @@ void freeDynamic(list **lst, four **arr)
 		free(current);
 		current = forward;
 	}
+	// current will nullify itself
 	(*lst) = NULL;
 }
 // --------------------------- //

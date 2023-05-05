@@ -77,6 +77,9 @@ int main()
 // your code:
 int greatestCommonDivisor(int a, int b)
 {
+	if (a == 0 && b == 0)
+		return -1;
+
 	if (a < 0)
 		a *= (-1);
 	if (b < 0)
@@ -106,7 +109,7 @@ fraction **createMatrix(int rows, int cols)
 	int i;
 	fraction **matrix = NULL;
 
-	if (rows < 0 || cols < 0)
+	if (rows < 1 || cols < 1)
 		return NULL;
 
 	matrix = (fraction **)malloc(rows * sizeof(fraction *));
@@ -240,6 +243,8 @@ fraction neighborFractionAverage(int A[][COLS], int i, int j, int rows, int cols
 	else
 	{
 		gcd = greatestCommonDivisor(sum, neighbours);
+		if (gcd < 0)
+			return -1;
 		avg.num = sum / neighbours;
 		avg.numerator = (sum % neighbours) / gcd;
 		avg.denominator = neighbours / gcd;

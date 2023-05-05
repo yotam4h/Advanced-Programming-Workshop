@@ -1,0 +1,12 @@
+long poop;
+long *poop2;
+long*poop3;
+long * poop4;
+long long poop5;
+long long *poop6;
+long long*poop7;
+long long * poop8;
+unsigned int poop9;
+unsigned int *poop10;
+unsigned int*poop11;
+unsigned int * poop12;

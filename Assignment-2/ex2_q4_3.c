@@ -42,16 +42,19 @@ int main()
 
 	// Start Program:
 	printf("Start Program\n");
-
+	// int mytotal;
+	// mytotal = memoryReport("file4.txt");
 	// call functions:
-	// total1 = memoryReport(PATH1);
-	// total2 = memoryReport(PATH2);
+	total1 = memoryReport(PATH1);
+	total2 = memoryReport(PATH2);
 	total3 = memoryReport(PATH3);
 
 	// write output:
 	printf("Output:\n");
-	// printf("First file required %d bytes\n", total1);
-	// printf("Second file required %d bytes\n", total2);
+
+	// printf("File required %d bytes\n", mytotal);
+	printf("First file required %d bytes\n", total1);
+	printf("Second file required %d bytes\n", total2);
 	printf("Third file required %d bytes\n", total3);
 
 	return 0;
@@ -68,6 +71,9 @@ int memoryReport(char *filename)
 {
 	// your code:
 
+	// --------------------------------------- //
+	// Variables declration:
+	// --------------------------------------- //
 	FILE *fd = NULL;
 	char input, checkll[5];
 	int memory = 0, num = 0;
@@ -78,7 +84,7 @@ int memoryReport(char *filename)
 		int times; // how many (if array)
 		bool isptr;
 	} var = {-1, 1, false};
-	bool unknowntype = true;
+	// enum for switch case
 	enum
 	{
 		ENDDECLERATION = ';',
@@ -86,42 +92,84 @@ int memoryReport(char *filename)
 		POINTER = '*',
 		BRACKET = '['
 	};
+	// enum for switch case
+	enum
+	{
+		CHAR = 'c',
+		DOUBLE = 'd',
+		FLOAT = 'f',
+		UINT = 'u',
+		INT = 'i',
+		LONG = 'l',
+		SHORT = 's'
+	};
+	// --------------------------------------- //
+	// Edgecases.
+	// --------------------------------------- //
+	{
+		if (filename == NULL)
+			return -1;
 
-	if (filename == NULL)
-		return -1;
-
-	fd = fopen(filename, "r");
-	if (fd == NULL)
-		return -1;
-
+		fd = fopen(filename, "r");
+		if (fd == NULL)
+		{
+			perror("Error");
+			return -1;
+		}
+	}
+	// --------------------------------------- //
+	// Iterate file.
+	// --------------------------------------- //
 	while ((input = fgetc(fd)) != EOF)
 	{
-		if (unknowntype && !isspace(input))
+		// --------------------------------------- //
+		// Skip whitespace.
+		// --------------------------------------- //
+		if (isspace(input))
+			continue;
+		// --------------------------------------- //
+		// Parse data type.
+		// --------------------------------------- //
+		else if (var.size == -1)
 		{
+
 			switch (input)
 			{
-			case 'c': // char
+			case CHAR:
+			{
 				var.size = sizeof(char);
 				fseek(fd, 3, SEEK_CUR);
-				break;
-			case 'd': // double
+			}
+			break;
+			case DOUBLE:
+			{
 				var.size = sizeof(double);
 				fseek(fd, 5, SEEK_CUR);
-				break;
-			case 'f': // float
+			}
+			break;
+			case FLOAT:
+			{
 				var.size = sizeof(float);
 				fseek(fd, 4, SEEK_CUR);
-				break;
-			case 'i': // int
+			}
+			break;
+			case UINT:
+			{
+				fseek(fd, 9, SEEK_CUR);
+			} // notice there is no break;
+			case INT:
+			{
 				var.size = sizeof(int);
 				fseek(fd, 2, SEEK_CUR);
-				break;
-			case 'l': // long // TODO: long long
+			}
+			break;
+			case LONG:
+			{
 				var.size = sizeof(long);
 				fseek(fd, 4, SEEK_CUR);
 
+				// long long
 				fgets(checkll, 5, fd);
-
 				if (strstr(checkll, "long"))
 				{
 					var.size = sizeof(long long);
@@ -130,30 +178,33 @@ int memoryReport(char *filename)
 				{
 					fseek(fd, -5, SEEK_CUR);
 				}
-
-				break;
-			case 's': // short
+			}
+			break;
+			case SHORT:
+			{
 				var.size = sizeof(short);
 				fseek(fd, 4, SEEK_CUR);
-				break;
-			case 'u': // unsigned int
-				var.size = sizeof(unsigned int);
-				fseek(fd, 11, SEEK_CUR);
-				break;
-			default:
-				return -1;
-				break;
 			}
-			unknowntype = false;
+			break;
+			default:
+			{
+				return -1;
+			}
+			break;
+			}
 		}
+		// --------------------------------------- //
+		// Parse name, pointer, array/matrix, next line.
+		// --------------------------------------- //
 		else
 		{
 			switch (input)
 			{
 			case ENDDECLERATION:
 			{
-				unknowntype = true;
+				// add var memory to total memory sum
 				memory += var.times * (var.isptr ? 4 : var.size);
+				// output var memory
 				printf(" requires %d bytes\n", var.times * (var.isptr ? 4 : var.size));
 				// reset var
 				var.isptr = false;
@@ -163,7 +214,9 @@ int memoryReport(char *filename)
 			break;
 			case NEXTVAR:
 			{
+				// add var memory to total memory sum
 				memory += var.times * (var.isptr ? 4 : var.size);
+				// output var memory
 				printf(" requires %d bytes\n", var.times * (var.isptr ? 4 : var.size));
 				// new var of same type
 				var.isptr = false;
@@ -177,6 +230,7 @@ int memoryReport(char *filename)
 			break;
 			case BRACKET:
 			{
+				// get num in [BRACKETS]
 				while ((input = fgetc(fd)) != EOF && input != ']')
 				{
 					if (isdigit(input))
@@ -184,6 +238,7 @@ int memoryReport(char *filename)
 						num = (num * 10) + (input - '0');
 					}
 				}
+				// multiply var.times
 				if (num > 0)
 				{
 					var.times *= num;
@@ -191,13 +246,10 @@ int memoryReport(char *filename)
 				}
 			}
 			break;
-
 			default:
 			{
-				if (!isspace(input))
-				{
-					putchar(input);
-				}
+				// print var name
+				putchar(input);
 			}
 			break;
 			}
@@ -205,7 +257,7 @@ int memoryReport(char *filename)
 	}
 	printf("\n");
 
-	// dumpster
+	// Dumpster
 	fclose(fd);
 	fd = NULL;
 	return memory;

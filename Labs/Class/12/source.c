@@ -28,7 +28,7 @@ int updateCustomer(char *id, double cartSum, char *filename)
         perror("Error");
         return 0;
     }
-
+    
     // dumpster
     fclose(fd);
     fd = NULL;

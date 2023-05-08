@@ -39,23 +39,23 @@ int memoryReport(char *filename);
 int main()
 {
 	int total1, total2, total3;
-
+	int mytotal;
 	// Start Program:
 	printf("Start Program\n");
 	// int mytotal;
-	// mytotal = memoryReport("file4.txt");
+	mytotal = memoryReport("edgecases.txt");
 	// call functions:
-	total1 = memoryReport(PATH1);
-	total2 = memoryReport(PATH2);
-	total3 = memoryReport(PATH3);
+	// total1 = memoryReport(PATH1);
+	// total2 = memoryReport(PATH2);
+	// total3 = memoryReport(PATH3);
 
 	// write output:
 	printf("Output:\n");
 
-	// printf("File required %d bytes\n", mytotal);
-	printf("First file required %d bytes\n", total1);
-	printf("Second file required %d bytes\n", total2);
-	printf("Third file required %d bytes\n", total3);
+	printf("File required %d bytes\n", mytotal);
+	// printf("First file required %d bytes\n", total1);
+	// printf("Second file required %d bytes\n", total2);
+	// printf("Third file required %d bytes\n", total3);
 
 	return 0;
 }
@@ -168,7 +168,7 @@ int memoryReport(char *filename)
 				var.size = sizeof(long);
 				fseek(fd, 4, SEEK_CUR);
 
-				// long long
+				// LONG LONG
 				fgets(checkll, 5, fd);
 				if (strstr(checkll, "long"))
 				{

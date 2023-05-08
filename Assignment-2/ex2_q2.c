@@ -112,7 +112,7 @@ int createArrayAndList(int A[][COLS], list **lst, four **arr, int rows, int cols
 	if (count == 0)
 		return 0;
 
-	// allocate array and list
+	// allocate array
 	(*arr) = (four *)malloc(count * sizeof(four));
 	if ((*arr) == NULL)
 		return 0;
@@ -129,6 +129,7 @@ int createArrayAndList(int A[][COLS], list **lst, four **arr, int rows, int cols
 			}
 		}
 	}
+
 	// allocate list
 	(*lst) = createElement(**arr);
 	current = (*lst);

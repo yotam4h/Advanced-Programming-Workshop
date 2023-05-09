@@ -1,4 +1,4 @@
-long poop;
+long poop1;
 long *poop2;
 long*poop3;
 long * poop4;
@@ -10,3 +10,16 @@ unsigned int poop9;
 unsigned int *poop10;
 unsigned int*poop11;
 unsigned int * poop12;
+short poop13;short*poop14;
+char poop15; char
+    *poop16;char * 
+    poop17,     poop18;
+double*poop19,
+    poop20
+    ,poop21;
+
+     int 
+    *   
+     poop22[
+         321    
+];

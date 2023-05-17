@@ -243,8 +243,6 @@ fraction neighborFractionAverage(int A[][COLS], int i, int j, int rows, int cols
 	else
 	{
 		gcd = greatestCommonDivisor(sum, neighbours);
-		if (gcd < 0)
-			return -1;
 		avg.num = sum / neighbours;
 		avg.numerator = (sum % neighbours) / gcd;
 		avg.denominator = neighbours / gcd;

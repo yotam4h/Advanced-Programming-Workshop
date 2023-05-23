@@ -3,22 +3,40 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+typedef struct account
+{
+    int id;
+    char name[31];
+    double sum;
+} Account;
+
 int updateCustomer(int id, double cartSum, char *filename);
 int createFile(char *filename);
+int createBinFile(char *filename);
+void printBinFile(char *filename);
+int updateBinCustomer(int id, double cartSum, char *filename);
 
-int main()
+int main() // ohadbi@my.hit.ac.il
 {
-    char *name = "data.txt";
+    // char *name = "data.txt";
+    char *bname = "data.bin";
+    if (!createBinFile(bname))
+    {
+        return EXIT_FAILURE;
+    }
+    else
+    {
+        printBinFile(bname);
+        updateBinCustomer(333444555, 500.5, bname);
+        printBinFile(bname);
+    }
     // if (!createFile(name))
     // {
     //     return EXIT_FAILURE;
     // }
-    // else
+    // else if (!updateCustomer(212345678, 200, name))
     // {
-    if (!updateCustomer(212345678, 200, name))
-    {
-        return EXIT_FAILURE;
-    }
+    //     return EXIT_FAILURE;
     // }
     return EXIT_SUCCESS;
 }
@@ -31,7 +49,7 @@ int createFile(char *filename)
     double sum;
     int check;
 
-    fout = fopen(filename, "a");
+    fout = fopen(filename, "w");
     if (fout == NULL)
     {
         perror("! Error");
@@ -123,51 +141,93 @@ int updateCustomer(int id, double cartSum, char *filename)
 
     return 1;
 }
-// int updateCustomer(char *id, double cartSum, char *filename)
-// {
-//     FILE *fout = NULL;
-//     double sum = -1;
-//     long pos;
-//     char line[10];
-//     line[9] = '\0';
-//     // edgecases
 
-//     fout = fopen(filename, "r+");
-//     // file didnt open
-//     if (fout == NULL)
-//     {
-//         perror("Error");
-//         return 0;
-//     }
+int updateBinCustomer(int id, double cartSum, char *filename)
+{
+    FILE *fd = NULL;
+    Account acc = {0, "", 0};
 
-//     // try 1.
-//     fscanf(fout, "%[0-9] %*[A-Za-z]", line);
-//     pos = ftell(fout);
-//     fscanf(fout, "%lf", &sum);
-//     while (!feof(fout))
-//     {
-//         if (!strcmp(line, id))
-//         {
-//             sum += cartSum;
-//             fseek(fout, pos, SEEK_SET);
-//             fprintf(fout, "%8.2lf", sum);
-//             fputs(" ", fout);
-//             pos = ftell(fout);
-//             while ((*line = fgetc(fout)) != '\n')
-//             {
-//                 fputc(' ', fout);
-//             }
-//             break;
-//         }
-//         fgets(line, 9, fout);
-//         fscanf(fout, "%[0-9] %*[A-Za-z]", line);
-//         pos = ftell(fout);
-//         fscanf(fout, "%lf", &sum);
-//     }
+    fd = fopen(filename, "rb+");
+    if (fd == NULL)
+    {
+        perror("! Error");
+        return 0;
+    }
+    else
+    {
+        fread(&acc, sizeof(Account), 1, fd);
+        while (!feof(fd))
+        {
+            if (acc.id == id)
+            {
+                fseek(fd, -(int)sizeof(Account), SEEK_CUR);
+                acc.sum += cartSum;
+                fwrite(&acc, sizeof(Account), 1, fd);
+                fclose(fd);
+                fd = NULL;
+                return 1;
+            }
+            fread(&acc, sizeof(Account), 1, fd);
+        }
+    }
 
-//     // dumpster
-//     fclose(fout);
-//     fout = NULL;
+    fclose(fd);
+    fd = NULL;
+    return 0;
+}
 
-//     return 1;
-// }
+int createBinFile(char *filename)
+{
+    FILE *fout = NULL;
+    Account acc = {0, "", 0};
+    int check;
+
+    fout = fopen(filename, "wb");
+    if (fout == NULL)
+    {
+        perror("! Error");
+        return 0;
+    }
+    else
+    {
+
+        printf("! Writing to file %s\n! Enter ID, Name, Sum by order. Spam EOF to stop.\n? ", filename);
+        check = scanf(" %9i %30s %lf", &acc.id, acc.name, &acc.sum);
+        while (check == 3)
+        {
+            fwrite(&acc, sizeof(Account), 1, fout);
+            printf("? ");
+            check = scanf(" %9i %30s %lf", &acc.id, acc.name, &acc.sum);
+        }
+    }
+    printf("\n! Finished input. \n\n");
+    fclose(fout);
+    fout = NULL;
+    return 1;
+}
+
+void printBinFile(char *filename)
+{
+    FILE *fin = NULL;
+    Account acc;
+
+    fin = fopen(filename, "rb");
+    if (fin == NULL)
+    {
+        perror("! Error");
+        return;
+    }
+    else
+    {
+        printf("! Printing file:\n");
+        fread(&acc, sizeof(Account), 1, fin);
+        while (!feof(fin))
+        {
+            printf("! ID:\t%-9i\t\tName:\t%-s\t\tSum:\t%-.2lf\n", acc.id, acc.name, acc.sum);
+            fread(&acc, sizeof(Account), 1, fin);
+        }
+        printf("\n");
+    }
+    fclose(fin);
+    fin = NULL;
+}
